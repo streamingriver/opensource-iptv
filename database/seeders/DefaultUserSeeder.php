@@ -10,7 +10,7 @@ class DefaultUserSeeder extends Seeder
 {
     public function run()
     {
-        $count = User::where("email", env("admin_email"))->exists();
+        $count = User::where("email", env("ADMIN_EMAIL"))->exists();
         if ($count == 0) {
             User::create([
                 'name' => 'Admin',
@@ -22,7 +22,7 @@ class DefaultUserSeeder extends Seeder
             
         $model = Filament::auth()->getProvider()->getModel();
 
-        $count = $model::where("email", env("admin_email"))->exists();
+        $count = $model::where("email", env("ADMIN_EMAIL"))->exists();
         if ($count == 0) {
             $model::create([
             'name' => 'Admin',
