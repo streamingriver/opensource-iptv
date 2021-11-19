@@ -41,9 +41,9 @@ class ChannelResource extends Resource
             ])
             ->filters([
                 // Filter::make("name"),
-            ])->prependRecordActions([
-                Link::make('view')->url(fn ($record) => static::generateUrl('sort', ['record' => $record])),
-            ]);;
+            ]); //->prependRecordActions([
+                // Link::make('view')->url(fn ($record) => static::generateUrl('sort', ['record' => $record])),
+            // ]);;
     }
 
     public static function relations()
