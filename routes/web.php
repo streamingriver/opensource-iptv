@@ -15,19 +15,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::prefix("admin")->middleware('auth')->group([], function () {
-
-// });
-Route::group(['prefix'=>'admin','middleware'=>'auth'], function() {
-
-});
-
 Route::group([], function() {
     Route::get("/i/show/{client_uuid}", ChannelsListController::class);
     Route::get("/i/get/{client_uuid}/{channel_uuid}", GetChannelController::class);
 });
 
-
-Route::get('/', function () {
-    return view('welcome');
-});

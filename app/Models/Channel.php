@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,7 +12,17 @@ class Channel extends Model
 
     public $guarded = ['id'];
 
-    public function scopeUUID($builder, $uuid) {
+    protected static function boot()
+    {
+        parent::boot();
+        
+        static::addGlobalScope('default_order_by', function (Builder $builder) {
+            $builder->orderBy('pos', 'asc');
+        });
+    }
+
+    public function scopeUUID($builder, $uuid)
+    {
         return $builder->where("uuid", $uuid);
     }
 

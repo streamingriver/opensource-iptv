@@ -36,6 +36,8 @@ class InitialDbMigration extends Migration
             $table->boolean("ffmpeg")->default(0);
             $table->boolean("active")->default(1);
 
+            $table->integer("pos")->nullable();
+
 
         });
 

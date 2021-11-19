@@ -7,5 +7,9 @@ use Filament\Resources\Pages\ListRecords;
 
 class ListChannels extends ListRecords
 {
+
+    public $canSort = true;
+    public $sortRoute = 'sort';
+    public static $sortButtonLabel = 'Sort';
     public static $resource = ChannelResource::class;
 }

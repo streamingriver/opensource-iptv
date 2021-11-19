@@ -12,6 +12,7 @@ use Filament\Resources\Resource;
 use Filament\Resources\Tables\Columns;
 use Filament\Resources\Tables\Filter;
 use Filament\Resources\Tables\Table;
+use Filament\Tables\RecordActions\Link;
 use Ramsey\Uuid\Uuid;
 
 class ChannelResource extends Resource
@@ -36,11 +37,13 @@ class ChannelResource extends Resource
     {
         return $table
             ->columns([
-                Columns\Text::make("name")->sortable(),
+                Columns\Text::make("name")->sortable()->searchable(),
             ])
             ->filters([
                 // Filter::make("name"),
-            ]);
+            ])->prependRecordActions([
+                Link::make('view')->url(fn ($record) => static::generateUrl('sort', ['record' => $record])),
+            ]);;
     }
 
     public static function relations()
@@ -56,6 +59,7 @@ class ChannelResource extends Resource
             Pages\ListChannels::routeTo('/', 'index'),
             Pages\CreateChannel::routeTo('/create', 'create'),
             Pages\EditChannel::routeTo('/{record}/edit', 'edit'),
+            Pages\SortChannels::routeTo('/sort', 'sort'),
         ];
     }
 }

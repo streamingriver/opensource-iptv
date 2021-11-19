@@ -26,7 +26,7 @@ class ClientResource extends Resource
                 Components\TextInput::make("short_url")->default(\Str::random(12))->disabled(),
                 Components\TextInput::make("name"),
                 Components\TextInput::make("comment"),
-                Components\BelongsToSelect::make("package_id")->relationship("packages", "name"),
+                Components\BelongsToSelect::make("package_id")->relationship("packages", "name")->preload(),
                 Components\Checkbox::make("active"),
             ]);
     }
