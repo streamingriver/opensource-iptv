@@ -24,7 +24,7 @@ class ChannelResource extends Resource
             ->schema([
                 Components\TextInput::make("uuid")->default(Uuid::uuid4())->disabled(),
                 Components\TextInput::make("name"),
-                Components\TextInput::make("url"),
+                // Components\TextInput::make("url"),
                 Components\TextInput::make("stream_url"),
                 Components\Checkbox::make("active"),
                 // Components\BelongsToSelect::make("package_id")
