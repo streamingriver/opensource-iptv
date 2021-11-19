@@ -14,8 +14,8 @@ class DefaultUserSeeder extends Seeder
         if ($count == 0) {
             User::create([
                 'name' => 'Admin',
-                'email' =>  env("admin_email"),
-                'password' => bcrypt(env("admin_password")),
+                'email' =>  env("ADMIN_EMAIL"),
+                'password' => bcrypt(env("ADMIn_PASSWORD")),
                 'email_verified_at' => now(),
             ]);
         }
@@ -26,8 +26,8 @@ class DefaultUserSeeder extends Seeder
         if ($count == 0) {
             $model::create([
             'name' => 'Admin',
-            'email' =>  env("admin_email"),
-            'password' => bcrypt(env("admin_password")),
+            'email' =>  env("ADMIN_EMAIL"),
+            'password' => bcrypt(env("ADMIN_PASSWORD")),
         ]);
         }
     }
