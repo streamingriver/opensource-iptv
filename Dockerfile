@@ -1,5 +1,9 @@
 FROM php:8.0-apache
 
+ENV APACHE_DOCUMENT_ROOT /app/sr-admin-gui/public/
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+
 RUN usermod -u 1000 www-data
 RUN groupmod -g 1000 www-data
 
@@ -62,7 +66,7 @@ RUN apt-get update \
   && rm -rf /var/cache/apt \
   && rm -rf /var/lib/apt/lists/
 
-FROM composer:latest as vendor
+COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
 USER www-data
 
@@ -70,6 +74,7 @@ COPY --chown=www-data:www-data . /app/sr-admin-gui
 
 
 RUN chown -R www-data:www-data /app/sr-admin-gui
+
 WORKDIR /app/sr-admin-gui
 
 ENV COMPOSER_HOME /app/sr-admin-gui
@@ -81,6 +86,9 @@ RUN composer install \
     --no-scripts \
     --prefer-dist
 
+EXPOSE 80
 
-CMD ["php", "artisan", "migrate", "--seed"]
+ENTRYPOINT ["bash", "/app/sr-admin-gui/scripts/Docker.sh"]
+
+
 
