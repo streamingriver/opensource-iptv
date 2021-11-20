@@ -68,10 +68,14 @@ RUN apt-get update \
 
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
+RUN mkdir -p /data/sr-admin-gui
+RUN chown -R www-data:www-data /data/sr-admin-gui
+
+VOLUME /data
+
 USER www-data
 
 COPY --chown=www-data:www-data . /app/sr-admin-gui
-
 
 RUN chown -R www-data:www-data /app/sr-admin-gui
 
@@ -87,6 +91,7 @@ RUN composer install \
     --prefer-dist
 
 EXPOSE 80
+
 
 ENTRYPOINT ["bash", "/app/sr-admin-gui/scripts/Docker.sh"]
 
