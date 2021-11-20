@@ -88,10 +88,10 @@ RUN composer install \
     --no-interaction \
     --no-plugins \
     --no-scripts \
-    --prefer-dist
+    --prefer-dist \
+    --no-dev
 
 EXPOSE 80
-
 
 ENTRYPOINT ["bash", "/app/sr-admin-gui/scripts/Docker.sh"]
 
