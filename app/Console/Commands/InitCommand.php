@@ -38,10 +38,18 @@ class InitCommand extends Command
      */
     public function handle()
     {
+        if(env("DB_CONNECTION") == "sqlite") {
+            if(!file_exists(env("DB_DATABASE"))) {
+                touch(env("DB_DATABASE"));
+            }
+        }
+
         if(env("APP_KEY") == "") {
             Artisan::call("key:generate --force");
         }
+        
         Artisan::call("migrate --seed --force");
+        
         return Command::SUCCESS;
     }
 }
