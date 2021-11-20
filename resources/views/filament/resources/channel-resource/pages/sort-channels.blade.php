@@ -10,7 +10,7 @@
 
         <ul wire:sortable="updateTaskOrder">
             @foreach ($channels as $channel)
-                <li wire:sortable.item="{{ $channel->id }}" wire:key="task-{{ $channel->id }}" class="cursor-pointer">
+                <li wire:sortable.item="{{ $channel->id }}" wire:key="task-{{ $channel->id }}" class="cursor-move">
                     <h4 wire:sortable.handle>{{ $channel->name }}</h4>
                     {{-- <button wire:click="removeTask({{ $channel->id }})">Remove</button> --}}
                 </li>
