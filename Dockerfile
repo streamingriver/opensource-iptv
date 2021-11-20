@@ -65,8 +65,7 @@ RUN apt-get update \
 
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
-RUN mkdir -p /data/sr-admin-gui
-RUN chown -R www-data:www-data /data/sr-admin-gui
+RUN mkdir -p /data
 RUN chown www-data:www-data /data
 
 VOLUME /data
