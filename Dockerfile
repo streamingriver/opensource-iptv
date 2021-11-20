@@ -48,8 +48,6 @@ RUN apt-get update \
   && docker-php-ext-install pdo_mysql \
   && docker-php-ext-configure intl \
   && docker-php-ext-install -j$(nproc) intl bcmath zip pcntl exif curl \
-
-#APACHE Bootstrap
   && a2enmod rewrite remoteip \
  && {\
      echo RemoteIPHeader X-Real-IP ;\
@@ -59,7 +57,6 @@ RUN apt-get update \
      echo SetEnvIf X-Forwarded-Proto "https" HTTPS=on ;\
     } > /etc/apache2/conf-available/remoteip.conf \
  && a2enconf remoteip \
-#Cleanup
   && docker-php-source delete \
   && apt-get autoremove --purge -y \
   && apt-get clean \
@@ -94,6 +91,3 @@ RUN composer install \
 EXPOSE 80
 
 ENTRYPOINT ["bash", "/app/sr-admin-gui/scripts/Docker.sh"]
-
-
-
