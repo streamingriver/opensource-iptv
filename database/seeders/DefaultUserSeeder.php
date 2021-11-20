@@ -10,19 +10,25 @@ class DefaultUserSeeder extends Seeder
 {
     public function run()
     {
-        $user = User::create([
-            'name' => 'Admin',
-            'email' =>  env("admin_email"),
-            'password' => bcrypt(env("admin_password")),
-            'email_verified_at' => now(),
-        ]);
-
+        $count = User::where("email", env("ADMIN_EMAIL"))->exists();
+        if ($count == 0) {
+            User::create([
+                'name' => 'Admin',
+                'email' =>  env("ADMIN_EMAIL"),
+                'password' => bcrypt(env("ADMIn_PASSWORD")),
+                'email_verified_at' => now(),
+            ]);
+        }
+            
         $model = Filament::auth()->getProvider()->getModel();
 
-        $model::create([
+        $count = $model::where("email", env("ADMIN_EMAIL"))->exists();
+        if ($count == 0) {
+            $model::create([
             'name' => 'Admin',
-            'email' =>  env("admin_email"),
-            'password' => bcrypt(env("admin_password")),
+            'email' =>  env("ADMIN_EMAIL"),
+            'password' => bcrypt(env("ADMIN_PASSWORD")),
         ]);
+        }
     }
 }
