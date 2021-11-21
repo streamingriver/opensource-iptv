@@ -9,7 +9,8 @@ class NatsService {
 
     public static function update() {
         $ffmpeg = Channel::where("ffmpeg", true)->get();
-        $cache = [];
+        $cache = Channel::where("ffmpeg", false)->get();
+
 
         $response = [
             'videoffmpeg' => [],
@@ -18,6 +19,13 @@ class NatsService {
 
         foreach($ffmpeg as $f) {
             $response['videoffmpeg'][] = [
+                'url' => $ffmpeg->stream_url,
+                'name' => $ffmpeg->uuid,
+            ];
+        }
+
+        foreach($cache as $f) {
+            $response['videocache'][] = [
                 'url' => $ffmpeg->stream_url,
                 'name' => $ffmpeg->uuid,
             ];
