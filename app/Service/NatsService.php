@@ -34,10 +34,7 @@ class NatsService {
 
         $url = sprintf("%s?topic=%s", $natsServer, $topic);
 
-        Http::withHeaders([
-            'Content-Type'=>"text/plain"
-        ])
-        ->withBody($message, 'text/plain')
+        Http::withBody($message, 'text/plain')
         ->post($url);
     }
 }
