@@ -68,11 +68,12 @@ RUN composer install \
     --prefer-dist \
     --no-dev
 
-RUN mkdir /data
-
-
 RUN chown -R nobody:nobody /var/www/html/storage
-RUN chown -R nobody:nobody /data
+
+RUN mkdir /data
+RUN chown nobody:nobody /data
+
+VOLUME /data
 
 EXPOSE 80
 

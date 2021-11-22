@@ -21,7 +21,7 @@ class GetChannelController extends Controller
         
         $response = "#EXTM3U\n";
         $response .= "#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=2024000\n";
-        $response .= sprintf("http://%s/streams/%s/%s/stream.m3u8", env("APP_URL"), $url, $channel->uuid);
+        $response .= sprintf("%s/streams/%s/%s/stream.m3u8", env("APP_URL"), $url, $channel->uuid);
         
         return response($response, 200, array('Content-Type' => 'text/plain'));
     }

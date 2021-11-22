@@ -26,8 +26,16 @@ class ChannelResource extends Resource
                 Components\TextInput::make("uuid")->default(Uuid::uuid4())->disabled(),
                 Components\TextInput::make("name"),
                 Components\TextInput::make("stream_url"),
-                Components\Checkbox::make("ffmpeg")->label("Use ffmpeg for stream_url"),
-                Components\Checkbox::make("active"),
+                Components\Select::make("ffmpeg")->options([
+                    '0' => 'Disabled',
+                    '1' => 'Enabled',
+                ])->label("Use ffmpeg for stream_url"),
+                Components\Select::make("active")->options([
+                    '0' => 'Disabled',
+                    '1' => 'Enabled',
+                ]),
+                // Components\Checkbox::make("ffmpeg")->label("meh"),
+                // Components\Checkbox::make("active"),
             ]);
     }
 
