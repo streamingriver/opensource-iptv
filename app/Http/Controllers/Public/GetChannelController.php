@@ -14,7 +14,10 @@ class GetChannelController extends Controller
 
         $client = Client::URL($url)->firstOrFail();
 
-        $client->update(['ip_addr'=>request()->server("REMOTE_ADDR")]);
+        $client->update([
+            'ip_addr'=>request()->server("REMOTE_ADDR"),
+            'ch' => $uuid,
+        ]);
         
         $response = "#EXTM3U\n";
         $response .= "#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=2024000\n";
