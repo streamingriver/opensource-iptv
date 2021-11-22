@@ -15,7 +15,7 @@ class TokensController extends Controller
 
         foreach($clients as $client) {
             $response['addr'][$client->ip_addr] = true;
-            $response['token'][$client->short_url] = $client->ip_addr;
+            $response['ip'][$client->short_url] = $client->ip_addr;
             $response['ch'][$client->short_url] = $client->ch;
 
         }
