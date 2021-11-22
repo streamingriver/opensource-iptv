@@ -69,6 +69,8 @@ RUN composer install \
     --no-dev
 
 RUN mkdir /data
+RUN touch /data/database.sqlite
+RUN chmod 777 /data/database.sqlite
 
 VOLUME /data
 
