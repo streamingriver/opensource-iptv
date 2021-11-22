@@ -1,84 +1,62 @@
-FROM php:8.0-apache
+FROM alpine:latest
 
-ENV APACHE_DOCUMENT_ROOT /app/sr-admin-gui/public/
-RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
-RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+WORKDIR /var/www/html/
 
-RUN usermod -u 1000 www-data
-RUN groupmod -g 1000 www-data
+RUN echo "UTC" > /etc/timezone
+RUN apk add --no-cache zip unzip curl sqlite nginx supervisor 
 
-RUN apt-get update \
-  && apt-get upgrade -y \
-  && apt-get install -y --no-install-recommends \
-      locales \
-      locales-all \
-      git \
-      gosu \
-      zip \
-      unzip \
-      libzip-dev \
-      libcurl4-openssl-dev \
-      optipng \
-      pngquant \
-      jpegoptim \
-      gifsicle \
-      libjpeg62-turbo-dev \
-      libpng-dev \
-      libmagickwand-dev \
-      libxpm4 \
-      libxpm-dev \
-      libwebp6 \
-      libwebp-dev \
-      ffmpeg \
-      libsqlite3-dev \
-  && sed -i '/en_US/s/^#//g' /etc/locale.gen \
-  && locale-gen \
-  && update-locale \
-  && docker-php-source extract \
-  && pecl install imagick \
-  && docker-php-ext-enable imagick \
-  && docker-php-ext-configure gd \
-      --with-freetype \
-      --with-jpeg \
-      --with-webp \
-      --with-xpm \
-  && docker-php-ext-install -j$(nproc) gd \
-  && pecl install redis \
-  && docker-php-ext-enable redis \
-  && docker-php-ext-install pdo_mysql \
-  && docker-php-ext-configure intl \
-  && docker-php-ext-install -j$(nproc) intl bcmath zip pcntl exif curl \
-  && a2enmod rewrite remoteip \
- && {\
-     echo RemoteIPHeader X-Real-IP ;\
-     echo RemoteIPTrustedProxy 10.0.0.0/8 ;\
-     echo RemoteIPTrustedProxy 172.16.0.0/12 ;\
-     echo RemoteIPTrustedProxy 192.168.0.0/16 ;\
-     echo SetEnvIf X-Forwarded-Proto "https" HTTPS=on ;\
-    } > /etc/apache2/conf-available/remoteip.conf \
- && a2enconf remoteip \
-  && docker-php-source delete \
-  && apt-get autoremove --purge -y \
-  && apt-get clean \
-  && rm -rf /var/cache/apt \
-  && rm -rf /var/lib/apt/lists/
+RUN apk add bash
+RUN sed -i 's/bin\/ash/bin\/bash/g' /etc/passwd
+
+RUN apk add --no-cache php8 \
+    php8-common \
+    php8-fpm \
+    php8-pdo \
+    php8-opcache \
+    php8-zip \
+    php8-phar \
+    php8-iconv \
+    php8-cli \
+    php8-curl \
+    php8-openssl \
+    php8-mbstring \
+    php8-tokenizer \
+    php8-fileinfo \
+    php8-json \
+    php8-xml \
+    php8-xmlwriter \
+    php8-simplexml \
+    php8-dom \
+    php8-pdo_mysql \
+    php8-pdo_sqlite \
+    php8-tokenizer \
+    php8-pecl-redis 
+
+
+RUN ln -s /usr/bin/php8 /usr/bin/php
 
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
-RUN mkdir -p /data
-RUN chown www-data:www-data /data
+RUN mkdir -p /etc/supervisor.d/
+COPY .docker/supervisord.ini /etc/supervisor.d/supervisord.ini
 
-VOLUME /data
+RUN mkdir -p /run/php/
+RUN touch /run/php/php8.0-fpm.pid
 
-USER www-data
+COPY .docker/php-fpm.conf /etc/php8/php-fpm.conf
+COPY .docker/php.ini-production /etc/php8/php.ini
 
-COPY --chown=www-data:www-data . /app/sr-admin-gui
+COPY .docker/nginx.conf /etc/nginx/
+COPY .docker/nginx-laravel.conf /etc/nginx/modules/
 
-RUN chown -R www-data:www-data /app/sr-admin-gui
+RUN mkdir -p /run/nginx/
+RUN touch /run/nginx/nginx.pid
 
-WORKDIR /app/sr-admin-gui
+RUN ln -sf /dev/stdout /var/log/nginx/access.log
+RUN ln -sf /dev/stderr /var/log/nginx/error.log
 
-ENV COMPOSER_HOME /app/sr-admin-gui
+COPY . .
+RUN composer install --no-dev
 
 RUN composer install \
     --ignore-platform-reqs \
@@ -88,9 +66,17 @@ RUN composer install \
     --prefer-dist \
     --no-dev
 
+RUN mkdir /data
+
+
+RUN chown -R nobody:nobody /var/www/html/storage
+RUN chown -R nobody:nobody /data
+
 EXPOSE 80
 
-ENTRYPOINT ["bash", "/app/sr-admin-gui/scripts/Docker.sh"]
+CMD ["supervisord", "-c", "/etc/supervisor.d/supervisord.ini"]
+
+
 
 
 
