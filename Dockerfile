@@ -68,14 +68,12 @@ RUN composer install \
     --prefer-dist \
     --no-dev
 
+RUN chown -R nobody:nobody /var/www/html/storage
+
 RUN mkdir /data
-RUN touch /data/database.sqlite
-RUN chmod 777 /data/database.sqlite
+RUN chown nobody:nobody /data
 
 VOLUME /data
-
-RUN chown -R nobody:nobody /var/www/html/storage
-RUN chown -R nobody:nobody /data
 
 EXPOSE 80
 
