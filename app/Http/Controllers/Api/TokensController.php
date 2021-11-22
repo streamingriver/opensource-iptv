@@ -20,7 +20,7 @@ class TokensController extends Controller
 
         }
 
-        return response()->json($response);
+        return response()->json((object)$response);
         
     }
 }
