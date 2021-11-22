@@ -70,6 +70,7 @@ RUN composer install \
 
 RUN mkdir /data
 
+VOLUME /data
 
 RUN chown -R nobody:nobody /var/www/html/storage
 RUN chown -R nobody:nobody /data
