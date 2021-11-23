@@ -24,18 +24,16 @@ class ChannelResource extends Resource
         return $form
             ->schema([
                 Components\TextInput::make("uuid")->default(Uuid::uuid4())->disabled(),
-                Components\TextInput::make("name"),
-                Components\TextInput::make("stream_url"),
+                Components\TextInput::make("name")->required(),
+                Components\TextInput::make("stream_url")->required(),
                 Components\Select::make("ffmpeg")->options([
                     '0' => 'Disabled',
                     '1' => 'Enabled',
-                ])->label("Use ffmpeg for stream_url"),
+                ])->label("Use ffmpeg for stream_url")->default(1),
                 Components\Select::make("active")->options([
                     '0' => 'Disabled',
                     '1' => 'Enabled',
-                ]),
-                // Components\Checkbox::make("ffmpeg")->label("meh"),
-                // Components\Checkbox::make("active"),
+                ])->default(1),
             ]);
     }
 
@@ -46,10 +44,7 @@ class ChannelResource extends Resource
                 Columns\Text::make("name")->sortable()->searchable(),
             ])
             ->filters([
-                // Filter::make("name"),
-            ]); //->prependRecordActions([
-                // Link::make('view')->url(fn ($record) => static::generateUrl('sort', ['record' => $record])),
-            // ]);;
+            ]); 
     }
 
     public static function relations()
