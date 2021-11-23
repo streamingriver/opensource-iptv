@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Channel;
 use App\Models\Client;
 use Illuminate\Http\Request;
+use Guzzle;
+use Illuminate\Support\Facades\Http;
 
 class GetChannelController extends Controller
 {
@@ -18,6 +20,9 @@ class GetChannelController extends Controller
             'ip_addr'=>request()->server("REMOTE_ADDR"),
             'ch' => $uuid,
         ]);
+
+
+        Http::get(env("VIDEO_GATEWAY")."/reload");
         
         $response = "#EXTM3U\n";
         $response .= "#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=2024000\n";
