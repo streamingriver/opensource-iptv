@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use Illuminate\Support\Str;
 use App\Filament\Resources\ClientResource\Pages;
 use App\Filament\Resources\ClientResource\RelationManagers;
 use App\Filament\Roles;
@@ -23,11 +24,14 @@ class ClientResource extends Resource
         return $form
             ->schema([
                 Components\TextInput::make("uuid")->default(Uuid::uuid4())->disabled(),
-                Components\TextInput::make("short_url")->default(\Str::random(12))->disabled(),
-                Components\TextInput::make("name"),
+                Components\TextInput::make("short_url")->default(Str::random(12))->disabled(),
+                Components\TextInput::make("name")->required(),
                 Components\TextInput::make("comment"),
-                Components\BelongsToSelect::make("package_id")->relationship("packages", "name")->preload(),
-                Components\Checkbox::make("active"),
+                Components\BelongsToSelect::make("package_id")->relationship("packages", "name")->preload()->required(),
+                Components\Select::make("active")->options([
+                    '0' => 'Disabled',
+                    '1' => 'Enabled',
+                ])->default(1),
             ]);
     }
 
