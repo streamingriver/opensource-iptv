@@ -44,10 +44,7 @@ class ChannelResource extends Resource
                 Columns\Text::make("name")->sortable()->searchable(),
             ])
             ->filters([
-                // Filter::make("name"),
-            ]); //->prependRecordActions([
-                // Link::make('view')->url(fn ($record) => static::generateUrl('sort', ['record' => $record])),
-            // ]);;
+            ]); 
     }
 
     public static function relations()
