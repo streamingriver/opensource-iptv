@@ -1,11 +1,12 @@
 # OpenSource IPTV
 
 
-copy .env.example to .env and edit to your environment
+copy .env.example to .env and edit to your environment and edit by your needs
 
 ```
 composer install --no-dev
 php artisan sriptv:init
+php artisan serve
 ```
 
 ## Docker 
