@@ -21,7 +21,7 @@ class PackageResource extends Resource
     {
         return $form
             ->schema([
-                Components\TextInput::make("name"),
+                Components\TextInput::make("name")->required(),
             ]);
     }
 
