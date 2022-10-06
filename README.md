@@ -1,30 +1,34 @@
 # OpenSource IPTV
 
+copy `.env.example` to `.env` and edit to your environment and edit by your needs.
+Set permissions of `.env` via `chmod 777 .env` .
 
-copy .env.example to .env and edit to your environment and edit by your needs
-
-```
+```shell
 composer install --no-dev
 php artisan sriptv:init
 php artisan serve
 ```
 
-## Docker 
+## Docker
 
-build:
+build the sr-admin-gui image
 
-```
+```shell
 docker build . -t sr-admin-gui
 ```
 
 run:
 
-```
-docker run -it -p 8080:80 -v data:/data -v "$(pwd)"/.env:/var/www/html/.env:z sr-admin-gui
+```shell
+docker run -it -p 8080:80 -v data:/data -v "$(pwd)"/.env:/var/www/html/.env sr-admin-gui
 ```
 
 or, if you want to get pre-built package, please use:
 
-```
+```shell
 docker pull ghcr.io/streamingriver/sr-admin-gui:latest
 ```
+
+## Access
+
+[Gui](http://localhost:8080/)
