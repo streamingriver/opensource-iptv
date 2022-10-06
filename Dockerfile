@@ -32,9 +32,6 @@ RUN apk add --no-cache php8 \
     php8-tokenizer \
     php8-pecl-redis 
 
-
-RUN ln -s /usr/bin/php8 /usr/bin/php
-
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
 RUN mkdir -p /etc/supervisor.d/

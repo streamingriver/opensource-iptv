@@ -1,0 +1,13 @@
+version: '3.7'
+
+services:
+  nginx:
+    build: .
+    volumes:
+      - .env:/var/www/html/.env
+      - data:/data
+    ports:
+      - '8080:80'
+    working_dir: /var/www/html
+volumes:
+  data:
